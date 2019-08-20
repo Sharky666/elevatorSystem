@@ -9,6 +9,7 @@ public class Main {
             currentElevator.setCurrentFloor(i * 2);
             elevatorService.addElevator(currentElevator);
         }
+        elevatorController.callElevator(-5);
         elevatorController.callElevator(5);
-     }
+    }
 }

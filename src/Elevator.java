@@ -37,11 +37,12 @@ public class Elevator {
     private void moveToTargetFloor() {
         this.setIdle(false);
         int distance = (this.currentFloor - this.targetFloors.get(0));
-        int yVector = Integer.compare(distance, 0);
+        int yVector = Integer.compare(0, distance);
         for (int i = 0; i < Math.abs(distance); i++) {
             this.currentFloor += yVector;
-            System.out.println(i);
+            System.out.println(this.getCurrentFloor());
         }
+        this.targetFloors.clear();
         this.setIdle(true);
     }
 }
