@@ -1,7 +1,10 @@
+import java.util.ArrayList;
+
 public class Elevator {
-    private boolean isIdle;
+    private boolean isIdle = true;
     private int currentFloor;
-    private int targetFloor;
+    private ArrayList<Integer> targetFloors = new ArrayList<>();
+    public static final int DOOR_TIMER = 2000;
 
     public boolean isIdle() {
         return isIdle;
@@ -19,11 +22,26 @@ public class Elevator {
         this.currentFloor = currentFloor;
     }
 
-    public int getTargetFloor() {
-        return targetFloor;
+    public ArrayList<Integer> getTargetFloors() {
+        return targetFloors;
     }
 
-    public void setTargetFloor(int targetFloor) {
-        this.targetFloor = targetFloor;
+    public void addTargetFloor(int targetFloor)
+    {
+        this.targetFloors.add(targetFloor);
+        if (this.isIdle) {
+            this.moveToTargetFloor();
+        };
+    }
+
+    private void moveToTargetFloor() {
+        this.setIdle(false);
+        int distance = (this.currentFloor - this.targetFloors.get(0));
+        int yVector = Integer.compare(distance, 0);
+        for (int i = 0; i < Math.abs(distance); i++) {
+            this.currentFloor += yVector;
+            System.out.println(i);
+        }
+        this.setIdle(true);
     }
 }

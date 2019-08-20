@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 
 public class ElevatorService {
-    private static ElevatorService instance = new ElevatorService();
-    private ArrayList<Elevator> elevators;
+    private static final ElevatorService instance = new ElevatorService();
+    private ArrayList<Elevator> elevators = new ArrayList<>();
 
     private ElevatorService() {}
 
