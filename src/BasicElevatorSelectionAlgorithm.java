@@ -4,35 +4,39 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class BasicElevatorSelectionAlgorithm implements ElevatorAlgorithm {
+public class BasicElevatorSelectionAlgorithm implements ElevatorSelectionAlgorithm {
 
     @Override
     public Elevator getElevator(ArrayList<Elevator> elevators, int sourceFloor) {
+        // Sort elevators by priority based upon the algorithm
         Stream<Elevator> sortedElevators = elevators.stream().sorted(new Comparator<Elevator>() {
             @Override
             public int compare(Elevator e1, Elevator e2) {
-//                the ratio of the distance from the two elevators to the source floor minus each other
-                int ratio = calculateDistance(sourceFloor, e1.getCurrentFloor()) - calculateDistance(sourceFloor, e2.getCurrentFloor());
-//                if the distance of the two elevators is equal and the passing state is not equal
-                if (ratio == 0) {
+                // The difference in distance of the two elevators from the source floor
+                // if the distance of the two elevators from the source floor is equal 0 will be returned.
+                // Otherwise, if the Int is signed, then e1 is closer to the source floor and vice versa
+                int r = Integer.compare(calculateDistance(sourceFloor, e1.getCurrentFloor()) - calculateDistance(sourceFloor, e2.getCurrentFloor()), 0);
+
+                // Since the distance is equal, more logic is required to determine the preferred elevator
+                if (r == 0) {
                     if (e1.isIdle() != e2.isIdle()) {
-//                    if e1 is idle, return -1, else 1
+                        // Idle elevators are preferred
                         return e1.isIdle() ? -1 : 1;
                     }
                     else if (isPassing(e1, sourceFloor) != isPassing(e2, sourceFloor)) {
-//                    if e1 is passing, return -1, else 1
+                        // Elevators passing by the source floor are preferred
                         return isPassing(e1, sourceFloor) ? -1 : 1;
                     }
 
                 }
-//                    return -1, 0 or 1 based upon the ratio
-                    return Integer.compare(ratio, 0);
+                // Closest elevator is preferred
+                return r;
             }
         });
-        List<Elevator> elevatorList = (sortedElevators.collect(Collectors.toList()));
-        for (Elevator elevator : elevatorList) {
-            System.out.println(elevator.getCurrentFloor() + (elevator.isIdle() ? " idle" : ""));
-        }
+
+        List<Elevator> elevatorList = sortedElevators.collect(Collectors.toList());
+
+        // Return the elevator that fits the scenario the best
         return elevatorList.get(0);
     }
 
